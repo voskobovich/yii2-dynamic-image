@@ -97,7 +97,7 @@ abstract class ImageUploadForm extends Model
         }
 
         $this->_pathID = date('Ymd');
-        $this->_path = $this->basePath . DIRECTORY_SEPARATOR . $this->_pathID;
+        $this->_path = $this->basePath . DIRECTORY_SEPARATOR . 'temp' . DIRECTORY_SEPARATOR . $this->_pathID;
         $this->_url = $this->baseUrl . '/temp/' . $this->_pathID;
     }
 
