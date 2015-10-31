@@ -1,0 +1,45 @@
+{
+  "name": "voskobovich/yii2-dynamic-image",
+  "description": "Tools for generating image sizes upon customer request for Yii2",
+  "keywords": [
+    "image",
+    "dynamic",
+    "generation",
+    "yii2"
+  ],
+  "homepage": "https://github.com/voskobovich/yii2-dynamic-image",
+  "type": "yii2-toolkit",
+  "license": "MIT",
+  "support": {
+    "issues": "https://github.com/voskobovich/yii2-dynamic-image/issues",
+    "source": "https://github.com/voskobovich/yii2-dynamic-image"
+  },
+  "authors": [
+    {
+      "name": "Vitaly Voskobovich",
+      "email": "vitaly@voskobovich.com",
+      "homepage": "http://voskobovich.com"
+    }
+  ],
+  "minimum-stability": "dev",
+  "require": {
+    "php": ">=5.4.0",
+    "yiisoft/yii2": "*",
+    "yiisoft/yii2-imagine": "~2.0.0",
+    "voskobovich/yii2-base-toolkit": "*"
+  },
+  "autoload": {
+    "psr-4": {
+      "voskobovich\\image\\dynamic": "",
+      "voskobovich\\image\\dynamic\\actions": "actions",
+      "voskobovich\\image\\dynamic\\components": "components",
+      "voskobovich\\image\\dynamic\\forms": "forms",
+      "voskobovich\\image\\dynamic\\rest\\actions": "rest/actions",
+      "voskobovich\\image\\dynamic\\rest\\behaviors": "rest/behaviors",
+      "voskobovich\\image\\dynamic\\rest\\forms": "rest/forms",
+      "voskobovich\\image\\dynamic\\rest\\validators": "rest/validators",
+      "voskobovich\\image\\dynamic\\web\\actions": "web/actions",
+      "voskobovich\\image\\dynamic\\web\\forms": "web/forms"
+    }
+  }
+}
