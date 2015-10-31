@@ -30,16 +30,16 @@
   },
   "autoload": {
     "psr-4": {
-      "voskobovich\\image\\dynamic": "",
-      "voskobovich\\image\\dynamic\\actions": "actions",
-      "voskobovich\\image\\dynamic\\components": "components",
-      "voskobovich\\image\\dynamic\\forms": "forms",
-      "voskobovich\\image\\dynamic\\rest\\actions": "rest/actions",
-      "voskobovich\\image\\dynamic\\rest\\behaviors": "rest/behaviors",
-      "voskobovich\\image\\dynamic\\rest\\forms": "rest/forms",
-      "voskobovich\\image\\dynamic\\rest\\validators": "rest/validators",
-      "voskobovich\\image\\dynamic\\web\\actions": "web/actions",
-      "voskobovich\\image\\dynamic\\web\\forms": "web/forms"
+      "voskobovich\\image\\dynamic\\": "",
+      "voskobovich\\image\\dynamic\\actions\\": "actions",
+      "voskobovich\\image\\dynamic\\components\\": "components",
+      "voskobovich\\image\\dynamic\\forms\\": "forms",
+      "voskobovich\\image\\dynamic\\rest\\actions\\": "rest/actions",
+      "voskobovich\\image\\dynamic\\rest\\behaviors\\": "rest/behaviors",
+      "voskobovich\\image\\dynamic\\rest\\forms\\": "rest/forms",
+      "voskobovich\\image\\dynamic\\rest\\validators\\": "rest/validators",
+      "voskobovich\\image\\dynamic\\web\\actions\\": "web/actions",
+      "voskobovich\\image\\dynamic\\web\\forms\\": "web/forms"
     }
   }
 }
