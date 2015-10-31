@@ -1,6 +1,6 @@
 {
   "name": "voskobovich/yii2-dynamic-image",
-  "description": "Tools for generating image sizes upon customer request for Yii2",
+  "description": "Tools for generating image sizes upon customer request and upload image on server for Yii2",
   "keywords": [
     "image",
     "dynamic",
