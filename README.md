@@ -32,7 +32,7 @@ or
 http://domain.com/uploads/images/post/2/0x400_imagesha1andmd5has.png
 ```  
 
-### Placeholder
+#### Placeholder
 The system is able to work with placeholders.  
 Placeholder can be root and for group objects.  
 
