@@ -82,7 +82,7 @@ to the require section of your `composer.json` file.
 Usage
 ---
 
-## Create and configure the controller
+## Create and configure controller
 
 ```
 class ImageController extends Frontend
