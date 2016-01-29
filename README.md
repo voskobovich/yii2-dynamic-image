@@ -89,7 +89,7 @@ The answer will contain
 ```
 
 
-### Rest Package
+### REST Api Package
 
 
 #### Getting image
@@ -203,7 +203,7 @@ class ImageController extends Frontend
 ```
 
 
-#### Rest Package
+#### REST Api Package
 
 
 Use the package for **voskobovich\image\dynamic\rest**.  
