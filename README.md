@@ -8,8 +8,16 @@ A toolkit for creating dynamic images during the GET request.
 [![Latest Unstable Version](https://poser.pugx.org/voskobovich/yii2-dynamic-image/v/unstable.svg)](https://packagist.org/packages/voskobovich/yii2-dynamic-image)
 [![Total Downloads](https://poser.pugx.org/voskobovich/yii2-dynamic-image/downloads.svg)](https://packagist.org/packages/voskobovich/yii2-dynamic-image)
 
+
+Support
+---
+[GutHub issues](https://github.com/voskobovich/yii2-dynamic-image/issues).
+
+
 See example
 ---
+
+#### Getting image
 
 Suppose the original image is available at URL.  
 ```
@@ -32,7 +40,8 @@ or
 http://domain.com/uploads/images/post/2/0x400_imagesha1andmd5hash.png
 ```  
 
-#### Placeholder
+##### Placeholder
+
 The system is able to work with placeholders.  
 Placeholder can be root and for group objects.  
 
@@ -54,9 +63,16 @@ or
 http://domain.com/uploads/images/300x400_placeholder.png
 ```
 
-Support
----
-[GutHub issues](https://github.com/voskobovich/yii2-dynamic-image/issues).
+#### Uploading image
+
+Coming soon...
+
+### Rest
+
+#### ImageBehavior
+
+#### ImageValidator
+
 
 
 Installation
@@ -82,8 +98,11 @@ to the require section of your `composer.json` file.
 Usage
 ---
 
-#### Create and configure controller
+#### Web Package
 
+Use the package for **voskobovich\image\dynamic\web**. 
+
+Create and configure your controller.  
 ```
 class ImageController extends Frontend
 {
@@ -124,6 +143,44 @@ class ImageController extends Frontend
 
        return $actions;
    }
+}
+```
+
+#### Rest Package
+
+Use the package for **voskobovich\image\dynamic\rest**.  
+
+Configure your controller as described above.  
+```
+class Post extends ActiveRecord
+{
+    //...
+    
+    public function rules()
+    {
+        $rules = parent::rules();
+        $rules[] = ['image', 'string', 'max' => 255];
+        $rules[] = ['image', ImageValidator::className()];
+        return $rules;
+    }
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        $behaviors[] = [
+            'class' => ImageBehavior::className(),
+            'basePath' => '@webroot/uploads/images/posts/{id}',
+            'baseUrl' => '/uploads/images/posts/{id}',
+            'fields' => [
+                'image' => 'image_name', // image_name - attribute in DB, image - behavior create this
+            ]
+        ];
+
+        return $behaviors;
+    }
+    
+    //...
 }
 ```
 

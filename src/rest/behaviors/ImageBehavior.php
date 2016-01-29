@@ -38,13 +38,13 @@ class ImageBehavior extends Behavior
      * Ссылка для доступа к изображению через сервер
      * @var string
      */
-    public $originUrl;
+    public $baseUrl;
 
     /**
      * Путь к изображаний модели
      * @var string
      */
-    public $originPath;
+    public $basePath;
 
     /**
      * Путь к временным изображениям
@@ -86,13 +86,13 @@ class ImageBehavior extends Behavior
      * Полный путь к изображениям модели
      * @var
      */
-    private $_originPath;
+    private $_basePath;
 
     /**
      * Ссылка к изображению
      * @var
      */
-    private $_originUrl;
+    private $_baseUrl;
 
     /**
      * Полный путь к временным изображениям
@@ -128,12 +128,12 @@ class ImageBehavior extends Behavior
             throw new InvalidConfigException('Property "fields" must be set');
         }
 
-        if (empty($this->originPath)) {
-            throw new InvalidConfigException('Property "originPath" must be set');
+        if (empty($this->basePath)) {
+            throw new InvalidConfigException('Property "basePath" must be set');
         }
 
-        if (empty($this->originUrl)) {
-            throw new InvalidConfigException('Property "originUrl" must be set');
+        if (empty($this->baseUrl)) {
+            throw new InvalidConfigException('Property "baseUrl" must be set');
         }
 
         if ($this->tempPath === null) {
@@ -194,13 +194,13 @@ class ImageBehavior extends Behavior
      */
     private function preparePaths($event)
     {
-        if (!$this->_originPath) {
-            $originPath = $this->normalizePath($this->originPath);
-            $this->_originPath = Yii::getAlias($originPath);
+        if (!$this->_basePath) {
+            $basePath = $this->normalizePath($this->basePath);
+            $this->_basePath = Yii::getAlias($basePath);
         }
 
-        if (!$this->_originUrl) {
-            $this->_originUrl = $this->normalizePath($this->originUrl);
+        if (!$this->_baseUrl) {
+            $this->_baseUrl = $this->normalizePath($this->baseUrl);
         }
     }
 
@@ -284,12 +284,12 @@ class ImageBehavior extends Behavior
                         $tempPath = $this->getTempPathByImageName($imageName);
                         $tempImage = $tempPath . DIRECTORY_SEPARATOR . $imageName;
 
-                        $originImage = $this->_originPath . DIRECTORY_SEPARATOR . $imageName;
+                        $originImage = $this->_basePath . DIRECTORY_SEPARATOR . $imageName;
 
                         if (file_exists($tempImage)) {
 
-                            if (!FileHelper::createDirectory($this->_originPath)) {
-                                throw new InvalidParamException("Directory specified in '{$this->_originPath}' attribute doesn't exist or cannot be created.");
+                            if (!FileHelper::createDirectory($this->_basePath)) {
+                                throw new InvalidParamException("Directory specified in '{$this->_basePath}' attribute doesn't exist or cannot be created.");
                             }
 
                             if (!rename($tempImage, $originImage)) {
@@ -301,7 +301,7 @@ class ImageBehavior extends Behavior
                         break;
                     case 'deleteImage': {
                         $imageName = $fieldTaskValue;
-                        $images = FileHelper::findFiles($this->_originPath, ['only' => ["*{$imageName}*"]]);
+                        $images = FileHelper::findFiles($this->_basePath, ['only' => ["*{$imageName}*"]]);
                         foreach ($images as $image) {
                             if (!unlink($image)) {
                                 throw new ServerErrorHttpException('Image not deleted: ' . $image);
@@ -320,7 +320,7 @@ class ImageBehavior extends Behavior
      */
     public function afterDelete()
     {
-        FileHelper::removeDirectory($this->_originPath);
+        FileHelper::removeDirectory($this->_basePath);
     }
 
     /**
@@ -470,7 +470,7 @@ class ImageBehavior extends Behavior
         if ($imageName) {
             switch ($taskName) {
                 case 'url' : {
-                    return $this->_originUrl;
+                    return $this->_baseUrl;
                 }
             }
         }
