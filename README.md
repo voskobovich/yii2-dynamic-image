@@ -44,7 +44,7 @@ http://domain.com/uploads/images/post/placeholder.png
 If the system did not find the image, then it will use a placeholder.  
 It will be prepared for the required size and returned instead of the expected picture.
 
-For example.  
+For example  
 ```
 Querying:  
 http://domain.com/uploads/images/post/2/300x400_imagesha1andmd5has.png  
