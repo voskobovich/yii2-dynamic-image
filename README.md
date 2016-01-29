@@ -1,5 +1,5 @@
 Yii2 Dynamic Image
-================================
+===
 
 A toolkit for creating dynamic images during the GET request.
 
@@ -9,7 +9,7 @@ A toolkit for creating dynamic images during the GET request.
 [![Total Downloads](https://poser.pugx.org/voskobovich/yii2-dynamic-image/downloads.svg)](https://packagist.org/packages/voskobovich/yii2-dynamic-image)
 
 See example
-------------
+---
 
 Suppose the original image is available at URL.  
 ```
@@ -55,12 +55,12 @@ http://domain.com/uploads/images/300x400_placeholder.png
 ```
 
 Support
--------
+---
 [GutHub issues](https://github.com/voskobovich/yii2-dynamic-image/issues).
 
 
 Installation
-------------
+---
 
 The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
 
@@ -79,8 +79,57 @@ or add
 to the require section of your `composer.json` file.
 
 
-Nginx
--------------
+Usage
+---
+
+## Create and configure the controller
+
+```
+class ImageController extends Frontend
+{
+   /**
+    * @inheritdoc
+    */
+   public function behaviors()
+   {
+       $behaviors = parent::behaviors();
+       $behaviors['verbs'] = [
+           'class' => VerbFilter::className(),
+           'actions' => [
+               'index' => ['GET'],
+               'upload' => ['POST'],
+           ],
+       ];
+       return $behaviors;
+   }
+
+   /**
+    * @inheritdoc
+    */
+   public function actions()
+   {
+       $actions = parent::actions();
+
+       $actions['index'] = [
+           'class' => 'voskobovich\image\dynamic\web\actions\IndexAction',
+           'basePath' => Yii::getAlias("@webroot/uploads"),
+           'baseUrl' => '/uploads/images',
+           'placeholder' => 'placeholder.png'
+       ];
+       $actions['upload'] = [
+           'class' => 'voskobovich\image\dynamic\web\actions\UploadAction',
+           'basePath' => Yii::getAlias('@webroot/uploads'),
+           'baseUrl' => '/uploads/images',
+       ];
+
+       return $actions;
+   }
+}
+```
+
+## Configuration web server
+
+#### Nginx
 ```
 location /uploads {  
 	# Autogeneration images  
@@ -92,9 +141,7 @@ location /uploads {
 }  
 ```
 
-
-Apache
--------------
+#### Apache
 ```
 # Autogeneration images
 RewriteRule ^uploads/([a-z0-9-]+)/([0-9]+)/([0-9]+)x([0-9]+)_(.*)$ /image?folder=$1&id=$2&width=$3&height=$4&name=$5 [R=302,L]  
