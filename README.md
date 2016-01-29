@@ -132,7 +132,7 @@ class ImageController extends Frontend
 ##### Nginx
 ```
 location /uploads {  
-	# Autogeneration images  
+	# For https://github.com/voskobovich/yii2-dynamic-image  
 	if (!-f $request_filename) {  
 	    rewrite ^/uploads/([a-z0-9-_]*)/([0-9]*)/([0-9]*)x([0-9]*)_(.*)$ /image?folder=$1&id=$2&width=$3&height=$4&name=$5 redirect;  
 	    rewrite ^/uploads/([a-z0-9-_]*)/([0-9]*)/(.*)$ /uploads/$1/placeholder.png redirect;  
@@ -143,7 +143,7 @@ location /uploads {
 
 ##### Apache
 ```
-# Autogeneration images
+# For https://github.com/voskobovich/yii2-dynamic-image
 RewriteRule ^uploads/([a-z0-9-]+)/([0-9]+)/([0-9]+)x([0-9]+)_(.*)$ /image?folder=$1&id=$2&width=$3&height=$4&name=$5 [R=302,L]  
 RewriteRule ^uploads/([a-z0-9-]+)/([0-9]+)/(.+)$ /uploads/$1/placeholder.png [R=302,L]  
 RewriteRule ^uploads/([a-z0-9-]+)/placeholder.png$ /uploads/placeholder.png [R=302,L]  
