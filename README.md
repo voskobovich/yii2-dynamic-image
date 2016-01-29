@@ -82,7 +82,7 @@ to the require section of your `composer.json` file.
 Usage
 ---
 
-## Create and configure controller
+#### Create and configure controller
 
 ```
 class ImageController extends Frontend
@@ -127,9 +127,9 @@ class ImageController extends Frontend
 }
 ```
 
-## Configuration web server
+#### Configuration web server
 
-#### Nginx
+##### Nginx
 ```
 location /uploads {  
 	# Autogeneration images  
@@ -141,7 +141,7 @@ location /uploads {
 }  
 ```
 
-#### Apache
+##### Apache
 ```
 # Autogeneration images
 RewriteRule ^uploads/([a-z0-9-]+)/([0-9]+)/([0-9]+)x([0-9]+)_(.*)$ /image?folder=$1&id=$2&width=$3&height=$4&name=$5 [R=302,L]  
