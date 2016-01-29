@@ -17,6 +17,8 @@ Support
 See example
 ---
 
+### Web Package
+
 
 #### Getting image
 
@@ -75,7 +77,24 @@ Coming soon...
 
 ### Rest Package
 
-Coming soon...
+
+#### Getting image
+
+
+After configuration the answer API you get 4 new attribute.  
+```
+{
+    ...
+    "image_small": "namesmallimage.png",
+    "image_small__url": "http://domain.com/uploads/images/post/2",
+    "image_big": "namebigimage.png",
+    "image_big__url": "http://domain.com/uploads/images/post/2",
+}
+```  
+Now on the client you can do so  
+```
+var bigImageUrl = answer.image_big__url + '/300x400_' + answer.image_big;
+```
 
 
 Installation
@@ -166,8 +185,13 @@ class Post extends ActiveRecord
     public function rules()
     {
         $rules = parent::rules();
-        $rules[] = ['image', 'string', 'max' => 255];
-        $rules[] = ['image', ImageValidator::className()];
+
+        $rules[] = ['image_small', 'string', 'max' => 255];
+        $rules[] = ['image_small', ImageValidator::className()];
+        
+        $rules[] = ['image_big', 'string', 'max' => 255];
+        $rules[] = ['image_big', ImageValidator::className()];
+        
         return $rules;
     }
 
@@ -180,11 +204,23 @@ class Post extends ActiveRecord
             'basePath' => '@webroot/uploads/images/posts/{id}',
             'baseUrl' => '/uploads/images/posts/{id}',
             'fields' => [
-                'image' => 'image_name', // image_name - attribute in DB, image - behavior create this
+                'image_small' => 'image_small_name',
+                'image_big' => 'image_big_name',
             ]
         ];
 
         return $behaviors;
+    }
+    
+    public function fields()
+    {
+        return [
+            ...
+            'image_small',
+            'image_small__url',
+            'image_big',
+            'image_big__url',
+        ];
     }
     
     //...
@@ -194,7 +230,7 @@ class Post extends ActiveRecord
 Configure ImagePathMap component in your config file.  
 ```
 return [
-    //...
+    ...
 	'components' => [
 		//...
         'imagePathMap' => [
