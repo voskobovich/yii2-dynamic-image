@@ -72,7 +72,21 @@ http://domain.com/uploads/images/300x400_placeholder.png
 
 #### Uploading image
 
-Coming soon...
+
+To upload a image you need to send a **multipart/form-data** POST request:  
+```
+POST: http://domain.com/image/upload
+Attribute name: file
+```  
+The answer will contain  
+```
+{
+    "name": "a26b9e822d962f1c7ebf6c255b170820.jpeg",
+    "url": "http://static.domain.com/uploads/images/temp/20150908",
+    "width": 300,
+    "height": 400
+}
+```
 
 
 ### Rest Package
@@ -86,14 +100,32 @@ After configuration the answer API you get 4 new attribute.
 {
     ...
     "image_small": "namesmallimage.png",
-    "image_small__url": "http://domain.com/uploads/images/post/2",
+    "image_small__url": "http://static.domain.com/uploads/images/post/2",
     "image_big": "namebigimage.png",
-    "image_big__url": "http://domain.com/uploads/images/post/2",
+    "image_big__url": "http://static.domain.com/uploads/images/post/2"
 }
 ```  
 Now on the client you can do so  
 ```
 var bigImageUrl = answer.image_big__url + '/300x400_' + answer.image_big;
+```
+
+#### Uploading image
+
+
+To upload a image you need to send a **multipart/form-data** POST request:  
+```
+POST: http://api.domain.com/image/upload
+Attribute name: file
+```  
+The answer will contain  
+```
+{
+    "name": "a26b9e822d962f1c7ebf6c255b170820.jpeg",
+    "url": "http://static.domain.com/uploads/images/temp/20150908",
+    "width": 300,
+    "height": 400
+}
 ```
 
 
