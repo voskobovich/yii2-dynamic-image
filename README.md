@@ -11,18 +11,19 @@ A toolkit for creating dynamic images during the GET request.
 See example
 ------------
 
-Suppose the original image is available at URL  
+Suppose the original image is available at URL.  
 ```
 http://domain.com/uploads/images/post/2/imagesha1andmd5has.png
 ```  
 and you want to get it at a rate of 300x400 pixels.  
-Simply add the desired dimensions in the name of the image as shown below   
+Simply add the desired dimensions in the name of the image as shown below.   
 ```
 http://domain.com/uploads/images/post/2/300x400_imagesha1andmd5has.png
 ```  
 Not bad, right?  
+
 But what if one size does not matter and system need to find it?  
-In this case, you need to specify a zero instead of the desired value  
+In this case, you need to specify a zero instead of the desired value.  
 ```
 http://domain.com/uploads/images/post/2/300x0_imagesha1andmd5has.png
 ```  
@@ -35,7 +36,7 @@ http://domain.com/uploads/images/post/2/0x400_imagesha1andmd5has.png
 The system is able to work with placeholders.  
 Placeholder can be root and for group objects.  
 
-Originals placed on the URL  
+Originals placed on the URL.  
 ```
 http://domain.com/uploads/images/placeholder.png
 http://domain.com/uploads/images/post/placeholder.png
