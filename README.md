@@ -13,23 +13,23 @@ See example
 
 Suppose the original image is available at URL.  
 ```
-http://domain.com/uploads/images/post/2/imagesha1andmd5has.png
+http://domain.com/uploads/images/post/2/imagesha1andmd5hash.png
 ```  
 and you want to get it at a rate of 300x400 pixels.  
 Simply add the desired dimensions in the name of the image as shown below.   
 ```
-http://domain.com/uploads/images/post/2/300x400_imagesha1andmd5has.png
+http://domain.com/uploads/images/post/2/300x400_imagesha1andmd5hash.png
 ```  
 Not bad, right?  
 
 But what if one size does not matter and system need to find it?  
 In this case, you need to specify a zero instead of the desired value.  
 ```
-http://domain.com/uploads/images/post/2/300x0_imagesha1andmd5has.png
+http://domain.com/uploads/images/post/2/300x0_imagesha1andmd5hash.png
 ```  
 or  
 ```
-http://domain.com/uploads/images/post/2/0x400_imagesha1andmd5has.png
+http://domain.com/uploads/images/post/2/0x400_imagesha1andmd5hash.png
 ```  
 
 #### Placeholder
@@ -47,7 +47,7 @@ It will be prepared for the required size and returned instead of the expected p
 For example  
 ```
 Querying:  
-http://domain.com/uploads/images/post/2/300x400_imagesha1andmd5has.png  
+http://domain.com/uploads/images/post/2/300x400_imagesha1andmd5hash.png  
 Returned:  
 http://domain.com/uploads/images/post/300x400_placeholder.png  
 or  
