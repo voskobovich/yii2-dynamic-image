@@ -67,12 +67,9 @@ http://domain.com/uploads/images/300x400_placeholder.png
 
 Coming soon...
 
-### Rest
+### Rest Package
 
-#### ImageBehavior
-
-#### ImageValidator
-
+Coming soon...
 
 
 Installation
