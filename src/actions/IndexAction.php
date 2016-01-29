@@ -16,10 +16,16 @@ use yii\base\InvalidParamException;
 abstract class IndexAction extends Action
 {
     /**
-     * System path to root images storage in you project
+     * System path to images storage
      * @var string
      */
     public $basePath;
+
+    /**
+     * Base url to images storage
+     * @var string
+     */
+    public $baseUrl;
 
     /**
      * Placeholder filename
@@ -37,6 +43,10 @@ abstract class IndexAction extends Action
         if (empty($this->basePath)) {
             throw new InvalidParamException('Param "basePath" can not be empty.');
         }
+
+        if (empty($this->baseUrl)) {
+            throw new InvalidParamException('Param "baseUrl" can not be empty.');
+        }
     }
 
     /**
@@ -52,7 +62,8 @@ abstract class IndexAction extends Action
     {
         $form = new ImageIndexForm([
             'placeholder' => $this->placeholder,
-            'basePath' => $this->basePath
+            'basePath' => $this->basePath,
+            'baseUrl' => $this->baseUrl,
         ]);
 
         $form->setAttributes([
@@ -67,6 +78,6 @@ abstract class IndexAction extends Action
             HttpError::the404();
         }
 
-        return $form;
+        return Yii::$app->response->redirect($form->getUrl());
     }
 }

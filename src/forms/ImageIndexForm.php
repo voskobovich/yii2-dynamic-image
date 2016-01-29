@@ -7,6 +7,7 @@ use Imagine\Image\Color;
 use Imagine\Image\ImageInterface;
 use Imagine\Image\ManipulatorInterface;
 use Imagine\Image\Point;
+use voskobovich\base\helpers\FileHelper;
 use voskobovich\base\helpers\HttpError;
 use Yii;
 use yii\base\InvalidConfigException;
@@ -51,10 +52,16 @@ class ImageIndexForm extends Model
     public $height;
 
     /**
-     * System path to root images storage in you project
+     * System path to images storage
      * @var string
      */
     public $basePath;
+
+    /**
+     * Base url to images storage
+     * @var string
+     */
+    public $baseUrl;
 
     /**
      * Filename of placeholder image
@@ -71,49 +78,49 @@ class ImageIndexForm extends Model
      * Root path to images of model
      * @var string
      */
-    private $_rootObjectPath;
+    private $_pathRootObject;
 
     /**
      * Path to images of current model
      * @var string
      */
-    private $_modelPath;
+    private $_pathObject;
 
     /**
      * Path to file
      * @var string
      */
-    private $_filePath;
+    private $_pathObjectFile;
 
     /**
      * Path to origin file
      * @var string
      */
-    private $_filePathOrigin;
+    private $_pathObjectFileOrigin;
 
     /**
      * Path to model placeholder file
      * @var string
      */
-    private $_placeholderPath;
+    private $_pathObjectPlaceholder;
 
     /**
      * Path to model origin placeholder file
      * @var string
      */
-    private $_placeholderPathOrigin;
+    private $_pathObjectPlaceholderOrigin;
 
     /**
      * Path to common placeholder file
      * @var string
      */
-    private $_rootPlaceholderPath;
+    private $_pathRootPlaceholder;
 
     /**
      * Path to  common origin placeholder file
      * @var string
      */
-    private $_rootPlaceholderPathOrigin;
+    private $_pathRootPlaceholderOrigin;
 
     /**
      * Init
@@ -164,6 +171,13 @@ class ImageIndexForm extends Model
         ];
     }
 
+    private $_url;
+    private $_urlRootObject;
+    private $_urlObject;
+    private $_urlObjectFile;
+    private $_urlObjectPlaceholder;
+    private $_urlRootPlaceholder;
+
     /**
      * Init variables
      * @throws \yii\web\HttpException
@@ -173,26 +187,31 @@ class ImageIndexForm extends Model
     {
         parent::afterValidate();
 
-        $this->_rootObjectPath = $this->basePath . DIRECTORY_SEPARATOR . $this->folder;
+        $this->_pathRootObject = $this->basePath . DIRECTORY_SEPARATOR . $this->folder;
+        $this->_urlRootObject = $this->baseUrl . DIRECTORY_SEPARATOR . $this->folder;
 
-        if (!is_dir($this->_rootObjectPath)) {
+        if (!is_dir($this->_pathRootObject)) {
             HttpError::the404();
         }
 
-        $this->_modelPath = $this->_rootObjectPath . DIRECTORY_SEPARATOR . $this->id;
+        $this->_pathObject = $this->_pathRootObject . DIRECTORY_SEPARATOR . $this->id;
+        $this->_urlObject = $this->_urlRootObject . DIRECTORY_SEPARATOR . $this->id;
 
-        if (!is_dir($this->_modelPath) && !mkdir($this->_modelPath)) {
-            HttpError::the500('Can not create directory: ' . $this->_modelPath);
+        if (!is_dir($this->_pathObject) && !FileHelper::createDirectory($this->_pathObject)) {
+            HttpError::the500('Can not create directory: ' . $this->_pathObject);
         }
 
-        $this->_filePath = $this->_modelPath . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->name;
-        $this->_filePathOrigin = $this->_modelPath . DIRECTORY_SEPARATOR . $this->name;
+        $this->_pathObjectFile = $this->_pathObject . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->name;
+        $this->_urlObjectFile = $this->_urlObject . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->name;
+        $this->_pathObjectFileOrigin = $this->_pathObject . DIRECTORY_SEPARATOR . $this->name;
 
-        $this->_placeholderPath = $this->_rootObjectPath . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->placeholder;
-        $this->_placeholderPathOrigin = $this->_rootObjectPath . DIRECTORY_SEPARATOR . $this->placeholder;
+        $this->_pathObjectPlaceholder = $this->_pathRootObject . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->placeholder;
+        $this->_urlObjectPlaceholder = $this->_urlRootObject . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->placeholder;
+        $this->_pathObjectPlaceholderOrigin = $this->_pathRootObject . DIRECTORY_SEPARATOR . $this->placeholder;
 
-        $this->_rootPlaceholderPath = $this->basePath . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->placeholder;
-        $this->_rootPlaceholderPathOrigin = $this->basePath . DIRECTORY_SEPARATOR . $this->placeholder;
+        $this->_pathRootPlaceholder = $this->basePath . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->placeholder;
+        $this->_urlRootPlaceholder = $this->baseUrl . DIRECTORY_SEPARATOR . $this->width . 'x' . $this->height . '_' . $this->placeholder;
+        $this->_pathRootPlaceholderOrigin = $this->basePath . DIRECTORY_SEPARATOR . $this->placeholder;
     }
 
     /**
@@ -201,29 +220,28 @@ class ImageIndexForm extends Model
      */
     public function save()
     {
-        $create = false;
-        if (file_exists($this->_filePath)) {
-            $this->_image = Image::getImagine()->open($this->_filePath);
-        } elseif (file_exists($this->_filePathOrigin)) {
-            $create = true;
-            $this->_image = Image::getImagine()->open($this->_filePathOrigin);
-        } elseif (file_exists($this->_placeholderPath)) {
-            $this->_image = Image::getImagine()->open($this->_placeholderPath);
-            $this->_filePath = $this->_placeholderPath;
-        } elseif (file_exists($this->_placeholderPathOrigin)) {
-            $create = true;
-            $this->_image = Image::getImagine()->open($this->_placeholderPathOrigin);
-            $this->_filePath = $this->_placeholderPath;
-        } elseif (file_exists($this->_rootPlaceholderPath)) {
-            $this->_image = Image::getImagine()->open($this->_rootPlaceholderPath);
-            $this->_filePath = $this->_rootPlaceholderPath;
-        } elseif (file_exists($this->_rootPlaceholderPathOrigin)) {
-            $create = true;
-            $this->_image = Image::getImagine()->open($this->_rootPlaceholderPathOrigin);
-            $this->_filePath = $this->_rootPlaceholderPath;
+        if (file_exists($this->_pathObjectFile)) {
+            $this->_url = $this->_urlObjectFile;
+            return true;
+        } elseif (file_exists($this->_pathObjectFileOrigin)) {
+            $this->_image = Image::getImagine()->open($this->_pathObjectFileOrigin);
+        } elseif (file_exists($this->_pathObjectPlaceholder)) {
+            $this->_url = $this->_urlObjectPlaceholder;
+            return true;
+        } elseif (file_exists($this->_pathObjectPlaceholderOrigin)) {
+            $this->_image = Image::getImagine()->open($this->_pathObjectPlaceholderOrigin);
+            $this->_pathObjectFile = $this->_pathObjectPlaceholder;
+            $this->_urlObjectFile = $this->_urlObjectPlaceholder;
+        } elseif (file_exists($this->_pathRootPlaceholder)) {
+            $this->_url = $this->_urlRootPlaceholder;
+            return true;
+        } elseif (file_exists($this->_pathRootPlaceholderOrigin)) {
+            $this->_image = Image::getImagine()->open($this->_pathRootPlaceholderOrigin);
+            $this->_pathObjectFile = $this->_pathRootPlaceholder;
+            $this->_urlObjectFile = $this->_urlRootPlaceholder;
         }
 
-        if ($create && $this->_image != null && !empty($this->_filePath)) {
+        if ($this->_image) {
             if (!$this->width || !$this->height) {
                 $ratio = $this->_image->getSize()->getWidth() / $this->_image->getSize()->getHeight();
                 if ($this->width) {
@@ -262,29 +280,20 @@ class ImageIndexForm extends Model
                 }
             }
 
-            $this->_image->save($this->_filePath);
+            $this->_image->save($this->_pathObjectFile);
+            $this->_url = $this->_urlObjectFile;
+            return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
-     * File extension
+     * Result image url
      * @return mixed
      */
-    public function getExtension()
+    public function getUrl()
     {
-        $imageInfo = pathinfo($this->_filePath);
-        return $imageInfo['extension'];
-    }
-
-    /**
-     * Printing
-     * @return string
-     */
-    public function __toString()
-    {
-        $this->_image->show($this->getExtension());
-        exit;
+        return $this->_url;
     }
 }
