@@ -17,7 +17,9 @@ Support
 See example
 ---
 
+
 #### Getting image
+
 
 Suppose the original image is available at URL.  
 ```
@@ -40,7 +42,9 @@ or
 http://domain.com/uploads/images/post/2/0x400_imagesha1andmd5hash.png
 ```  
 
+
 ##### Placeholder
+
 
 The system is able to work with placeholders.  
 Placeholder can be root and for group objects.  
@@ -63,9 +67,11 @@ or
 http://domain.com/uploads/images/300x400_placeholder.png
 ```
 
+
 #### Uploading image
 
 Coming soon...
+
 
 ### Rest Package
 
@@ -95,7 +101,9 @@ to the require section of your `composer.json` file.
 Usage
 ---
 
+
 #### Web Package
+
 
 Use the package for **voskobovich\image\dynamic\web**. 
 
@@ -143,7 +151,9 @@ class ImageController extends Frontend
 }
 ```
 
+
 #### Rest Package
+
 
 Use the package for **voskobovich\image\dynamic\rest**.  
 
@@ -181,7 +191,22 @@ class Post extends ActiveRecord
 }
 ```
 
+Configure ImagePathMap component in your config file.  
+```
+return [
+    //...
+	'components' => [
+		//...
+        'imagePathMap' => [
+            'class' => 'voskobovich\image\dynamic\components\ImagePathMap'
+        ],
+	],
+];
+```
+
+
 #### Configuration web server
+
 
 ##### Nginx
 ```
@@ -194,6 +219,7 @@ location /uploads {
 	}  
 }  
 ```
+
 
 ##### Apache
 ```
