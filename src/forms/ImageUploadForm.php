@@ -147,7 +147,7 @@ abstract class ImageUploadForm extends Model
                 throw new InvalidParamException("Directory specified in '{$this->_path}' attribute doesn't exist or cannot be created.");
             }
 
-            $name = FileHelper::getRandomFileName($this->_path, $this->file->getExtension());
+            $name = FileHelper::generateRandomName($this->_path, $this->file->getExtension());
             $filePath = $this->_path . DIRECTORY_SEPARATOR . $name;
 
             // Если оригинальная картинка сохранилась
